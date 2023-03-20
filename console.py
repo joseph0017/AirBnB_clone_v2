@@ -119,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         my_list = args.split(" ")
-        if !my_list[0] in HBNBCommand.classes:
+        if my_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[my_list[0]]()
@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
                     value = float(value)
                 else:
                     value = int(value)
-            setattr(new_instance, arg_pair[0], value)
+            setattr(new_instance, key_value[0], value)
         new_instance.save()
         print("{}".format(new_instance.id))
 
