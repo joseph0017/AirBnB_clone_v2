@@ -17,7 +17,5 @@ class State(BaseModel, Base):
     def cities(self):
         """returns list of city instances"""
         from models import storage
-        get_cities = storgae.all(City).items()
-        for key, value in get_cities:
-            if value.state_id == self.id:
-                return value
+        return [v for k, v in storage.all(City).items()
+                if v.state_id == self.id]
