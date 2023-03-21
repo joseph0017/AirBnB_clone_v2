@@ -4,9 +4,8 @@ module for class DBStorage
 """
 
 from sys import argv
-from sqlalchemy import (create_engine)
-from sqlalchemy.orm import sessionmaker
 from os import getenv
+from models.base_model import Base
 from models.state import State
 from models.city import City
 from models.user import User
@@ -14,6 +13,7 @@ from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy import (create_engine)
 
 
 user = getenv("HBNB_MYSQL_USER")
@@ -29,7 +29,6 @@ class DBStorage():
 
     def __init__(self):
         """Initializes storage, class constructor"""
-        from models.base_model import Base
         self.__engine =  create_engine(
           'mysql+mysqldb://{}:{}@localhost/{}'
           .format(user, password,
@@ -68,7 +67,6 @@ class DBStorage():
             
     def reload(self):
         """Create all tables in the db"""
-        from models.base_model import Base
         if getenv("env") == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
