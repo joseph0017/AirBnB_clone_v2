@@ -4,6 +4,15 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Table, ForeignKey, Float
 from sqlalchemy.orm import relationship, backref
 
+metadata = Base.metadata
+place_amenity = Table("place_amenity", metadata,
+                     Column("place_id", String(60),
+                            ForeignKey="places.id",
+                            nullable=False),
+                     Column("amenity_id", String(60),
+                            ForeignKey="amenities.id",
+                            nullable=False))
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -21,6 +30,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
     
     reviews = relationship("Review", backref="place", cascade="all, delete")
+    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
     
     @property
     def reviews(self):
@@ -34,4 +44,25 @@ class Place(BaseModel, Base):
             if self.id == value.place_id:
                 new_list.append(value)
         return new_list
-                
+        
+    @property
+    def reviews(self):
+        """
+        getter attribute reviews that returns the list of Amenity
+        instances with amenity_ids equals to the current Amenity.id
+        """
+        new_list = []
+        query = storage.all().items()
+        for key, value in query:
+            if self.id == value.amenity_ids:
+                new_list.append(value)
+        return new_list
+    
+    @amenities.setter
+    def amenities(self, obj):
+        """
+        Setter attribute that handles append method for adding an Amenity.id
+        to the attribute amenity_ids.
+        """
+        if isinstance(obj, 'Amenity'):
+            self.amenity_id.append(obj.id)
