@@ -4,7 +4,6 @@ import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, Table, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from models import storage
 
 Base = declarative_base()
 
@@ -45,7 +44,7 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        
+        from models import storage
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
@@ -67,4 +66,5 @@ class BaseModel:
         deletes the current instance from the storage
         (models.storage) by calling the method delete
         """
-        storage.delete(self)
+        import models
+        models.storage.delete(self)
