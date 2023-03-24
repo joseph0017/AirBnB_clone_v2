@@ -7,7 +7,7 @@ from os import getenv
 
 
 storage_type = "HBNB_TYPE_STORAGE"
-if(storage_type) == "db":
+if getenv(storage_type) == "db":
     metadata = Base.metadata
     place_amenity = Table("place_amenity", metadata,
                          Column("place_id", String(60),
