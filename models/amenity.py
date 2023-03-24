@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel
+<<<<<<< HEAD
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship, backref
@@ -22,3 +23,9 @@ class Amenity(BaseModel):
     def __init__(self, *args, **kwargs):
         """initializes Place"""
         super().__init__(*args, **kwargs)
+=======
+
+
+class Amenity(BaseModel):
+    name = ""
+>>>>>>> parent of 85cab16... Update amenity.py
