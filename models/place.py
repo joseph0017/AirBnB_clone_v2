@@ -50,17 +50,16 @@ class Place(BaseModel, Base):
         return new_list
         
     @property
-    def reviews(self):
+    def amenities(self):
         """
-        getter attribute reviews that returns the list of Amenity
-        instances with amenity_ids equals to the current Amenity.id
+        Getter attribute amenities that returns the list of Amenity
+        instances based on the attribute amenity_ids
         """
-        new_list = []
-        query = storage.all().items()
-        for key, value in query:
-            if self.id == value.amenity_ids:
-                new_list.append(value)
-        return new_list
+        from models import storage
+        from models.amenity import Amenity
+
+        return [amenity for amenity in storage.all(Amenity).values()
+                if amenity.place_id == self.id]
     
     @amenities.setter
     def amenities(self, obj):
