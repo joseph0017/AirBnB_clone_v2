@@ -9,7 +9,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """returns the list of objects of one type of class."""
+        """Returns a dictionary of models currently in storage"""
         if cls is None:
             return FileStorage.__objects
         my_dict = {}
@@ -54,20 +54,20 @@ class FileStorage:
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
-    
+
     def delete(self, obj=None):
+        """public instance method to delete obj from __objects
+        if it’s inside
         """
-        public instance method: to delete obj from __objects
-        """
-        if not obj:
+        if obj is None:
             return
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        if key in self.__objects:
-            del self.__objects[key]
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        if key in FileStorage.__objects:
+            del FileStorage.__objects[key]
             self.save()
 
     def close(self):
-        """
-        call reload() method for deserializing the JSON file to objects
+        """Public method to call reload for deserializing the
+        JSON file.
         """
         self.reload()
