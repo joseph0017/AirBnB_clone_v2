@@ -2,14 +2,6 @@
 """Module DBstorage class"""
 from os import getenv
 from sqlalchemy import create_engine, MetaData
-from models.state import State
-from models.city import City
-from models.user import User
-from models.review import Review
-from models.amenity import Amenity
-from models.place import Place
-from models.base_model import Base
-from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage():
@@ -19,6 +11,7 @@ class DBStorage():
 
     def __init__(self):
         """Initializes storage"""
+        from models.base_model import Base
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}:3306/{}'
             .format(getenv("HBNB_MYSQL_USER"),
@@ -26,11 +19,15 @@ class DBStorage():
                     getenv("HBNB_MYSQL_HOST"),
                     getenv("HBNB_MYSQL_DB")),
             pool_pre_ping=True)
-        if getenv("HBNB_ENV") == "test":
-            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """returnds all object of class"""
+        from models.state import State
+        from models.city import City
+        from models.user import User
+        from models.place import Place
+        from models.review import Review
+        from models.amenity import Amenity
 
         class_list = [
             State, City, User, Place, Review, Amenity]
@@ -62,6 +59,17 @@ class DBStorage():
 
     def reload(self):
         """Create all tables in the db"""
+        from models.base_model import Base
+        from models.state import State
+        from models.city import City
+        from models.user import User
+        from models.review import Review
+        from models.amenity import Amenity
+        from models.place import Place
+        from sqlalchemy.orm import sessionmaker, scoped_session
+
+        if getenv("HBNB_ENV") == "test":
+            Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
 
         session_mak = sessionmaker(bind=self.__engine,
