@@ -1,3 +1,7 @@
 git add .
+<<<<<<< HEAD
 git commit -m "airbnb version 2"
+=======
+git commit -m "BnB"
+>>>>>>> 198e92b61384971e960e98900967f4f0ac720045
 git push

@@ -1,14 +1,8 @@
 #!/usr/bin/python3
-"""
-If equal to db, imports DBStorage
-else, Import FileStorage 
-"""
-
+"""Generate a unique storage instance"""
 from os import getenv
 
-storage_type = "HBNB_TYPE_STORAGE"
-
-if getenv(storage_type) == "db":
+if getenv("HBNB_TYPE_STORAGE") == "db":
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
 else:
