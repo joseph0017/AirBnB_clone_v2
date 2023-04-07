@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from fabric.api import env, local, run, put
+import os
 
 env.hosts = ['100.26.17.152', '54.89.109.11']
 env.user = 'ubuntu'
@@ -22,8 +23,8 @@ def do_deploy(archive_path):
         run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
             archive_name, archive_name[:-4]))
         run("rm /tmp/{}".format(archive_name))
-        run("mv /data/web_static/releases/{}/web_static/* "
-            "/data/web_static/releases/{}/".format(
+        new_dir = "/data/web_static/releases/{}/".format(archive_name[:-4])
+        run("mv /data/web_static/releases/{}/web_static/* {new_dir}".format(
                 archive_name[:-4], archive_name[:-4]))
         run("rm -rf /data/web_static/releases/{}/web_static".format(
             archive_name[:-4]))
