@@ -8,6 +8,7 @@ from datetime import datetime
 
 env.hosts = ['localhost']
 
+
 def do_pack():
     """
     Generate a .tgz archive from the contents of the web_static folder
