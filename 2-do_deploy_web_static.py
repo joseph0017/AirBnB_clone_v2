@@ -23,14 +23,14 @@ def do_deploy(archive_path):
             archive_name, archive_name[:-4]))
         run("rm /tmp/{}".format(archive_name))
         new_dir = "/data/web_static/releases/{}/".format(archive_name[:-4])
-        run("mv /data/web_static/releases/{}/web_static/* {new_dir}".format(
-                archive_name[:-4], archive_name[:-4]))
+        run("mv /data/web_static/releases/{}/web_static/* {}".format(
+                archive_name[:-4], new_dir))
         run("rm -rf /data/web_static/releases/{}/web_static".format(
             archive_name[:-4]))
         run("rm -rf /data/web_static/current")
         ln_dir = "/data/web_static/current"
         run("ln -s /data/web_static/releases/{}/ {}".format(
-            ln_dir, archive_name[:-4]))
+             archive_name[:-4], ln_dir))
         return True
-    except:
+    except Exception:
         return False
