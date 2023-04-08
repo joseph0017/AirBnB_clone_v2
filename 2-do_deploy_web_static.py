@@ -1,24 +1,26 @@
 #!/usr/bin/python3
-
+"""
+Fabric script (based on the file 1-pack_web_static.py) that distributes
+an archive to your web servers, using the function do_deploy
+"""
 from datetime import datetime
 from fabric.api import env, local, run, put
 import os
 
-env.hosts = ['100.26.17.152', '54.89.109.11']
+env.hosts = ['54.237.35.82', '18.209.224.87']
 env.user = 'ubuntu'
 
 
 def do_deploy(archive_path):
     """
-    Distributes an archive to web servers
+    serves an archive to web servers
     """
     if not os.path.exists(archive_path):
         return False
     try:
         archive_name = os.path.basename(archive_path)
-        put(archive_path, "/tmp/{}".format(archive_name))
-        run("mkdir -p /data/web_static/releases/{}/".format(
-            archive_name[:-4]))
+        put(archive_path, f"/tmp/{archive_name}")
+        run(f"mkdir -p /data/web_static/releases/{archive_name[:-4]}/")
         run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
             archive_name, archive_name[:-4]))
         run("rm /tmp/{}".format(archive_name))
