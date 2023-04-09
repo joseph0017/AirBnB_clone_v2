@@ -13,26 +13,24 @@ env.user = 'ubuntu'
 
 def do_deploy(archive_path):
     """
-    serves an archive to web servers
+    distributes an archive to your web servers,
+    using the function do_deploy
     """
-    if not os.path.exists(archive_path):
-        return False
+    file_name = os.path.basename(archive_path)
+    path_release = splitext(f"/data/web_static/releases/{file_name}")[0]
+    path_current = '/data/web_static/current'
     try:
-        archive_name = os.path.basename(archive_path)
-        put(archive_path, f"/tmp/{archive_name}")
-        run(f"mkdir -p /data/web_static/releases/{archive_name[:-4]}/")
-        run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
-            archive_name, archive_name[:-4]))
-        run("rm /tmp/{}".format(archive_name))
-        new_dir = "/data/web_static/releases/{}/".format(archive_name[:-4])
-        run("mv /data/web_static/releases/{}/web_static/* {}".format(
-                archive_name[:-4], new_dir))
-        run("rm -rf /data/web_static/releases/{}/web_static".format(
-            archive_name[:-4]))
-        run("rm -rf /data/web_static/current")
-        ln_dir = "/data/web_static/current"
-        run("ln -s /data/web_static/releases/{}/ {}".format(
-             archive_name[:-4], ln_dir))
+        if os.path.exists(archive_path) is None:
+            return False
+        put(archive_path, f"/tmp/{file_name}")
+        run(f"mkdir -p {path_release}")
+        run(f"tar -xzf /tmp/{file_name} -C {path_release}")
+        run(f"rm /tmp/{file_name}")
+        run(f"mv {path_release}/web_static/* {path_release}")
+        run(f"m -rf {path_release}/web_static")
+        run(f"rm -rf {path_current}")
+        run(f"ln -s {path_release} {path_current}")
+        print("yaaay!! New version deployed!")
         return True
     except Exception:
         return False
