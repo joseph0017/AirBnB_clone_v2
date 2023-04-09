@@ -1,41 +1,55 @@
 # Puppet script that sets up your web servers for the deployment of web_static
 
-$directories = ['/data/','/data/web_static','/data/web_static/shared','/data/web_static/releases','/data/web_static/releases/test']
-
 package { 'nginx':
   ensure   => 'present',
   provider => 'apt'
 }
 
-file {$directories:
-  ensure  => 'directory',
-  recurse => 'remote',
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0777'
+file { '/data':
+  ensure  => 'directory'
 }
 
-file {'/data/web_static/current':
-  ensure => link,
+file { '/data/web_static':
+  ensure => 'directory'
+}
+
+file { '/data/web_static/releases':
+  ensure => 'directory'
+}
+
+file { '/data/web_static/releases/test':
+  ensure => 'directory'
+}
+
+file { '/data/web_static/current':
+  ensure => 'link',
   target => '/data/web_static/releases/test'
 }
 
-file {'/data/web_static/releases/test/index.html':
-  ensure  => 'present'
-  content => 'dummy alx content'
+file { '/data/web_static/shared':
+  ensure => 'directory'
 }
 
-exec {'chown -R ubuntu:ubuntu /data/':
+file { '/data/web_static/releases/test/index.html':
+  ensure  => 'present',
+  content => "dummy alx content"
+}
+
+exec { 'chown -R ubuntu:ubuntu /data/':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
 }
 
-file_line {'deploy':
-  path  => '/etc/nginx/sites-available/default',
-  after => 'server_name _',
+file { '/var/www':
+  ensure => 'directory'
 }
 
-service {'nginx':
-  ensure => 'running'
+file { '/var/www/html':
+  ensure => 'directory'
+}
+
+file { '/var/www/html/index.html':
+  ensure  => 'present',
+  content => "well hello there!"
 }
 
 exec { 'nginx restart':
