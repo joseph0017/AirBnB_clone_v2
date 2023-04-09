@@ -1,19 +1,5 @@
 # Puppet script that sets up your web servers for the deployment of web_static
 
-# Nginx configuration => /etc/nginx/sites-available/default
-$nginx_configuration = "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    # Header
-    add_header X-Served-By $HOSTNAME;
-    root   /var/www/html;
-    index  index.html index.htm;
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html index.htm;
-    }
-}"
-
 package { 'nginx':
   ensure   => 'present',
   provider => 'apt'
@@ -63,7 +49,6 @@ file { '/var/www/html':
 
 file { '/etc/nginx/sites-available/default':
   ensure  => 'present',
-  content => $nginx_configuration
 } 
 
 file { '/var/www/html/index.html':
