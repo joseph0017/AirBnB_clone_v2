@@ -1,9 +1,10 @@
-# Deploying a static website
+# Puppet script that sets up your web servers for the deployment of web_static
 
 $directories = ['/data/','/data/web_static','/data/web_static/shared','/data/web_static/releases','/data/web_static/releases/test']
 
-package {'nginx':
-  ensure => installed
+package { 'nginx':
+  ensure   => 'present',
+  provider => 'apt'
 }
 
 file {$directories:
@@ -21,7 +22,7 @@ file {'/data/web_static/current':
 
 file {'/data/web_static/releases/test/index.html':
   ensure  => 'present'
-  content => 'This is a simple content'
+  content => 'dummy alx content'
 }
 
 exec {'chown -R ubuntu:ubuntu /data/':
@@ -31,12 +32,12 @@ exec {'chown -R ubuntu:ubuntu /data/':
 file_line {'deploy':
   path  => '/etc/nginx/sites-available/default',
   after => 'server_name _',
-  line  =>
 }
 
 service {'nginx':
   ensure => 'running'
 }
 
-exec {'/etc/init.d/nginx restart'
+exec { 'nginx restart':
+  path => '/etc/init.d/'
 }
