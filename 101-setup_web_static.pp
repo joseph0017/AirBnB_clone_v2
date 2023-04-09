@@ -2,19 +2,16 @@
 
 # Nginx configuration => /etc/nginx/sites-available/default
 $nginx_configuration = "server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-        #The header
-        add_header X-Served-By $HOSTNAME;
-        root /var/www/html;
-        index index.html index.htm index.nginx-debian.html;
-        server_name _;
-	
-	error_page 404 /page_not_found.html;
-        location /404 {
-                root /var/www/html;
-		internal;
-        }
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    # Header
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html index.htm;
+    }
 }"
 
 package { 'nginx':
