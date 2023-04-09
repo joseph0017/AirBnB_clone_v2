@@ -16,21 +16,19 @@ def do_deploy(archive_path):
     distributes an archive to your web servers,
     using the function do_deploy
     """
-    file_name = os.path.basename(archive_path)
-    path_release = splitext(f"/data/web_static/releases/{file_name}")[0]
-    path_current = '/data/web_static/current'
+    if not os.path.exists(archive_path):
+        return False
     try:
-        if os.path.exists(archive_path) is None:
-            return False
-        put(archive_path, f"/tmp/{file_name}")
-        run(f"mkdir -p {path_release}")
-        run(f"tar -xzf /tmp/{file_name} -C {path_release}")
-        run(f"rm /tmp/{file_name}")
-        run(f"mv {path_release}/web_static/* {path_release}")
-        run(f"m -rf {path_release}/web_static")
-        run(f"rm -rf {path_current}")
-        run(f"ln -s {path_release} {path_current}")
-        print("yaaay!! New version deployed!")
+        put(archive_path, '/tmp/')
+        filename = archive_path.split("/")[-1]
+        foldername = ("/data/web_static/releases/" + filename.split(".")[0])
+        run("mkdir -p {}".format(foldername))
+        run("tar -xzf /tmp/{} -C {}".format(filename, foldername))
+        run("rm /tmp/{}".format(filename))
+        run("mv {}/web_static/* {}/".format(foldername, foldername))
+        run("rm -rf {}/web_static".format(foldername))
+        run("rm -rf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(foldername))
         return True
-    except Exception:
+    except:
         return False
