@@ -41,13 +41,13 @@ class DBStorage():
         if cls:
             results = self.__session.query(cls)
             for record in results:
-                key = "{}.{}".format(type(record).__name__, record.id)
+                key = "{}.{}".format(record.__class__.__name__, record.id)
                 dictionary[key] = record
         else:
             for l in self.__classes:
                 results = self.__session.query(l)
                 for record in results:
-                    key = "{}.{}".format(type(record).__name__, row.id)
+                    key = "{}.{}".format(record.__class__.__name__, row.id)
                     my_dict[key] = record
         return my_dict
 
