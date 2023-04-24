@@ -1,4 +1,4 @@
-
+#!/usr/bin/python3
 """ Console Module """
 import cmd
 import sys
@@ -117,15 +117,6 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-<<<<<<< HEAD
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
-=======
         new_list = args.split()
         if new_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
@@ -152,7 +143,6 @@ class HBNBCommand(cmd.Cmd):
             
         new_instance.save()
         print(f"{new_instance.id}")
->>>>>>> 5e82579af1123b31cba65d59bbfb4e8baa667523
 
     def help_create(self):
         """ Help information for the create method """
