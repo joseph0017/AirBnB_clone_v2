@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""Generate a unique storage instance"""
+"""
+This module instantiates an object of class FileStorage
+or DBStorage
+"""
 from os import getenv
 
 if getenv("HBNB_TYPE_STORAGE") == "db":

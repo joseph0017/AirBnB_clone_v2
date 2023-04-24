@@ -1,15 +1,8 @@
-<<<<<<< HEAD
--- Creates the database hbnb_test_db 
-=======
--- Script to create a MySQL server with the database hbnb_test_db.
->>>>>>> 198e92b61384971e960e98900967f4f0ac720045
+-- Creates the database hbnb_test_db
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost';
-SET PASSWORD FOR 'hbnb_test'@'localhost' = 'hbnb_test_pwd';
+ALTER USER 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
 GRANT USAGE ON *.* TO 'hbnb_test'@'localhost';
-GRANT SELECT ON `performance_schema`.* TO 'hbnb_test'@'localhost';
-<<<<<<< HEAD
-GRANT ALL PRIVILEGES ON `hbnb_test_db`.* TO 'hbnb_test'@'localhost';
-=======
-GRANT ALL PRIVILEGES ON `hbnb_test_db`.* TO 'hbnb_test'@'localhost';
->>>>>>> 198e92b61384971e960e98900967f4f0ac720045
+GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
+GRANT SELECT ON performance_schema.* TO 'hbnb_test'@'localhost';
+FLUSH PRIVILEGES;
